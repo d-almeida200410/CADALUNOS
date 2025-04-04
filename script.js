@@ -33,6 +33,26 @@ document.addEventListener('DOMContentLoaded', function() {
     let alunos = [];
     let editandoId = null;
     
+    // Função para formatar a data corretamente, considerando o fuso horário
+    function formatarDataVencimento(dataString) {
+        if (!dataString) return 'Não informado';
+        
+        // Criar a data no fuso horário local
+        const partes = dataString.split('-');
+        const ano = parseInt(partes[0]);
+        const mes = parseInt(partes[1]) - 1; // Meses são 0-indexados
+        const dia = parseInt(partes[2]);
+        
+        const data = new Date(ano, mes, dia);
+        
+        // Formatar para o padrão brasileiro (DD/MM/YYYY)
+        return data.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    }
+    
     // Carregar alunos do Firestore
     function carregarAlunos() {
         db.collection("alunos").orderBy("nome").onSnapshot((snapshot) => {
@@ -227,9 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         alunos.forEach(aluno => {
-            const dataVencimento = aluno.vencimento ? 
-                new Date(aluno.vencimento).toLocaleDateString('pt-BR') : 
-                'Não informado';
+            const dataVencimento = formatarDataVencimento(aluno.vencimento);
             
             // Garantir que dias seja tratado como array
             const diasAluno = Array.isArray(aluno.dias) ? aluno.dias : 
@@ -295,7 +313,8 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         listaAlunos.innerHTML = html;
-    }    
+    }
+    
     // Função para formatar mês para exibição (YYYY-MM para "Mês/YYYY")
     function formatarMesParaExibicao(mesAno) {
         const [ano, mes] = mesAno.split('-');
