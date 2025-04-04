@@ -35,47 +35,41 @@
             </div>
             
             <div class="form-group">
-                <label>Período de Aula:</label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="manha" name="periodo" value="Manhã" checked>
-                        <label for="manha" class="radio-label">🌞 Manhã</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="tarde1" name="periodo" value="Tarde (14h-16h)">
-                        <label for="tarde1" class="radio-label">🌇 Tarde (14h-16h)</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="tarde2" name="periodo" value="Tarde (16h-18h)">
-                        <label for="tarde2" class="radio-label">🌆 Tarde (16h-18h)</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="tarde3" name="periodo" value="Tarde (18h-20h)">
-                        <label for="tarde3" class="radio-label">🌃 Tarde (18h-20h)</label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Dias da Semana:</label>
-                <div class="checkbox-group">
-                    <div class="checkbox-option">
-                        <input type="checkbox" id="segunda" name="dias" value="Segunda">
-                        <label for="segunda" class="checkbox-label">📅 Segunda</label>
-                    </div>
-                    <div class="checkbox-option">
-                        <input type="checkbox" id="terca" name="dias" value="Terça">
-                        <label for="terca" class="checkbox-label">📅 Terça</label>
-                    </div>
-                    <div class="checkbox-option">
-                        <input type="checkbox" id="quarta" name="dias" value="Quarta">
-                        <label for="quarta" class="checkbox-label">📅 Quarta</label>
-                    </div>
-                    <div class="checkbox-option">
-                        <input type="checkbox" id="quinta" name="dias" value="Quinta">
-                        <label for="quinta" class="checkbox-label">📅 Quinta</label>
+                <label>Horários de Aula:</label>
+                <div id="horariosContainer">
+                    <!-- Os horários serão adicionados dinamicamente aqui -->
+                    <div class="horario-item">
+                        <div class="horario-row">
+                            <div class="periodo-group">
+                                <label>Período:</label>
+                                <select class="periodo-select input-glow">
+                                    <option value="Manhã">🌞 Manhã</option>
+                                    <option value="Tarde (14h-16h)">🌇 Tarde (14h-16h)</option>
+                                    <option value="Tarde (16h-18h)">🌆 Tarde (16h-18h)</option>
+                                    <option value="Tarde (18h-20h)">🌃 Tarde (18h-20h)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="dias-group">
+                                <label>Dias:</label>
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" value="Segunda"> Seg</label>
+                                    <label><input type="checkbox" value="Terça"> Ter</label>
+                                    <label><input type="checkbox" value="Quarta"> Qua</label>
+                                    <label><input type="checkbox" value="Quinta"> Qui</label>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn btn-danger btn-remove-horario" style="display: none;">
+                                <span class="btn-text">🗑</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
+                
+                <button type="button" id="addHorarioBtn" class="btn btn-secondary btn-sm">
+                    <span class="btn-text">+ Adicionar Horário</span>
+                </button>
             </div>
             
             <div class="button-group">
@@ -112,7 +106,7 @@
             </div>
         </div>
     </div>
-<!-- Adicione isso antes do seu script.js -->
+
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>

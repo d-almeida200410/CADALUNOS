@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitBtn = document.getElementById('submitBtn');
     const cancelEditBtn = document.getElementById('cancelEditBtn');
     const alunoIdInput = document.getElementById('alunoId');
+    const addHorarioBtn = document.getElementById('addHorarioBtn');
+    const horariosContainer = document.getElementById('horariosContainer');
     
     // Elementos do modal
     const modal = document.getElementById('confirmModal');
@@ -33,24 +35,92 @@ document.addEventListener('DOMContentLoaded', function() {
     let alunos = [];
     let editandoId = null;
     
-    // Função para formatar a data corretamente, considerando o fuso horário
+    // Função para formatar a data corretamente
     function formatarDataVencimento(dataString) {
         if (!dataString) return 'Não informado';
         
-        // Criar a data no fuso horário local
         const partes = dataString.split('-');
         const ano = parseInt(partes[0]);
-        const mes = parseInt(partes[1]) - 1; // Meses são 0-indexados
+        const mes = parseInt(partes[1]) - 1;
         const dia = parseInt(partes[2]);
         
         const data = new Date(ano, mes, dia);
         
-        // Formatar para o padrão brasileiro (DD/MM/YYYY)
         return data.toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
         });
+    }
+    
+    // Adicionar novo horário
+    function adicionarNovoHorario() {
+        const novoHorario = document.createElement('div');
+        novoHorario.className = 'horario-item';
+        novoHorario.innerHTML = `
+            <div class="horario-row">
+                <div class="periodo-group">
+                    <label>Período:</label>
+                    <select class="periodo-select input-glow">
+                        <option value="Manhã">🌞 Manhã</option>
+                        <option value="Tarde (14h-16h)">🌇 Tarde (14h-16h)</option>
+                        <option value="Tarde (16h-18h)">🌆 Tarde (16h-18h)</option>
+                        <option value="Tarde (18h-20h)">🌃 Tarde (18h-20h)</option>
+                    </select>
+                </div>
+                
+                <div class="dias-group">
+                    <label>Dias:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="Segunda"> Seg</label>
+                        <label><input type="checkbox" value="Terça"> Ter</label>
+                        <label><input type="checkbox" value="Quarta"> Qua</label>
+                        <label><input type="checkbox" value="Quinta"> Qui</label>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-danger btn-remove-horario">
+                    <span class="btn-text">🗑</span>
+                </button>
+            </div>
+        `;
+        
+        horariosContainer.appendChild(novoHorario);
+        
+        // Habilitar botão de remover para todos exceto o primeiro
+        const removeButtons = document.querySelectorAll('.btn-remove-horario');
+        if (removeButtons.length > 1) {
+            removeButtons.forEach(btn => btn.style.display = 'inline-block');
+        }
+    }
+    
+    // Remover horário
+    function removerHorario(event) {
+        if (horariosContainer.children.length > 1) {
+            event.target.closest('.horario-item').remove();
+            
+            // Se só restar um horário, esconder botão de remover
+            if (horariosContainer.children.length === 1) {
+                document.querySelector('.btn-remove-horario').style.display = 'none';
+            }
+        }
+    }
+    
+    // Obter horários do formulário
+    function getHorariosFromForm() {
+        const horarios = [];
+        const horarioItems = document.querySelectorAll('.horario-item');
+        
+        horarioItems.forEach(item => {
+            const periodo = item.querySelector('.periodo-select').value;
+            const dias = Array.from(item.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+            
+            if (dias.length > 0) {
+                horarios.push({ periodo, dias });
+            }
+        });
+        
+        return horarios;
     }
     
     // Carregar alunos do Firestore
@@ -92,6 +162,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inicialização
     carregarAlunos();
+    addHorarioBtn.addEventListener('click', adicionarNovoHorario);
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-remove-horario')) {
+            removerHorario(e);
+        }
+    });
     
     // Event Listeners
     cadastroForm.addEventListener('submit', handleSubmit);
@@ -104,19 +180,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleSubmit(e) {
         e.preventDefault();
         
+        const horarios = getHorariosFromForm();
+        if (horarios.length === 0) {
+            showError('Adicione pelo menos um horário com dias selecionados!');
+            return;
+        }
+        
         const aluno = {
             nome: document.getElementById('nome').value,
             valor: parseFloat(document.getElementById('valor').value).toFixed(2),
             vencimento: document.getElementById('vencimento').value,
-            periodo: document.querySelector('input[name="periodo"]:checked').value,
-            dias: getDiasSelecionados(),
+            horarios: horarios,
             dataCadastro: firebase.firestore.FieldValue.serverTimestamp()
         };
-        
-        if (aluno.dias.length === 0) {
-            showError('Selecione pelo menos um dia da semana!');
-            return;
-        }
         
         if (editandoId) {
             // Atualizar aluno existente
@@ -142,11 +218,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function getDiasSelecionados() {
-        const diasCheckboxes = document.querySelectorAll('input[name="dias"]:checked');
-        return Array.from(diasCheckboxes).map(cb => cb.value);
-    }
-    
     // Funções de interface
     function editarAluno(id) {
         const aluno = alunos.find(a => a.id === id);
@@ -158,15 +229,44 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('valor').value = aluno.valor;
         document.getElementById('vencimento').value = aluno.vencimento;
         
-        // Definir período
-        document.querySelectorAll('input[name="periodo"]').forEach(radio => {
-            radio.checked = radio.value === aluno.periodo;
-        });
+        // Limpar horários existentes
+        horariosContainer.innerHTML = '';
         
-        // Definir dias
-        document.querySelectorAll('input[name="dias"]').forEach(cb => {
-            cb.checked = aluno.dias.includes(cb.value);
-        });
+        // Adicionar horários do aluno
+        if (aluno.horarios && aluno.horarios.length > 0) {
+            aluno.horarios.forEach((horario, index) => {
+                if (index === 0) {
+                    // Primeiro horário (já existe no HTML)
+                    const primeiroSelect = document.querySelector('.periodo-select');
+                    const primeiroCheckboxes = document.querySelectorAll('.horario-item:first-child input[type="checkbox"]');
+                    
+                    primeiroSelect.value = horario.periodo;
+                    primeiroCheckboxes.forEach(cb => {
+                        cb.checked = horario.dias.includes(cb.value);
+                    });
+                } else {
+                    // Horários adicionais
+                    adicionarNovoHorario();
+                    const ultimoHorario = document.querySelector('.horario-item:last-child');
+                    ultimoHorario.querySelector('.periodo-select').value = horario.periodo;
+                    
+                    ultimoHorario.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                        cb.checked = horario.dias.includes(cb.value);
+                    });
+                }
+            });
+        } else {
+            // Compatibilidade com versão antiga (período e dias separados)
+            const primeiroSelect = document.querySelector('.periodo-select');
+            const primeiroCheckboxes = document.querySelectorAll('.horario-item:first-child input[type="checkbox"]');
+            
+            if (aluno.periodo) primeiroSelect.value = aluno.periodo;
+            if (aluno.dias) {
+                primeiroCheckboxes.forEach(cb => {
+                    cb.checked = aluno.dias.includes(cb.value);
+                });
+            }
+        }
         
         submitBtn.textContent = 'Atualizar Aluno';
         cancelEditBtn.style.display = 'inline-block';
@@ -188,6 +288,37 @@ document.addEventListener('DOMContentLoaded', function() {
         cadastroForm.reset();
         document.getElementById('manha').checked = true;
         alunoIdInput.value = '';
+        
+        // Limpar horários (deixar apenas um)
+        horariosContainer.innerHTML = `
+            <div class="horario-item">
+                <div class="horario-row">
+                    <div class="periodo-group">
+                        <label>Período:</label>
+                        <select class="periodo-select input-glow">
+                            <option value="Manhã">🌞 Manhã</option>
+                            <option value="Tarde (14h-16h)">🌇 Tarde (14h-16h)</option>
+                            <option value="Tarde (16h-18h)">🌆 Tarde (16h-18h)</option>
+                            <option value="Tarde (18h-20h)">🌃 Tarde (18h-20h)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="dias-group">
+                        <label>Dias:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" value="Segunda"> Seg</label>
+                            <label><input type="checkbox" value="Terça"> Ter</label>
+                            <label><input type="checkbox" value="Quarta"> Qua</label>
+                            <label><input type="checkbox" value="Quinta"> Qui</label>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-danger btn-remove-horario" style="display: none;">
+                        <span class="btn-text">🗑</span>
+                    </button>
+                </div>
+            </div>
+        `;
     }
     
     function confirmarRemocao(id, nome) {
@@ -237,8 +368,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <th>Nome</th>
                         <th>Valor (R$)</th>
                         <th>Vencimento</th>
-                        <th>Período</th>
-                        <th>Dias</th>
+                        <th>Horários</th>
                         <th>Meses Pagos</th>
                         <th>Ações</th>
                     </tr>
@@ -249,9 +379,18 @@ document.addEventListener('DOMContentLoaded', function() {
         alunos.forEach(aluno => {
             const dataVencimento = formatarDataVencimento(aluno.vencimento);
             
-            // Garantir que dias seja tratado como array
-            const diasAluno = Array.isArray(aluno.dias) ? aluno.dias : 
-                             (aluno.dias && typeof aluno.dias === 'string' ? aluno.dias.split(', ') : []);
+            // Formatar horários
+            let horariosHtml = 'Nenhum horário';
+            if (aluno.horarios && aluno.horarios.length > 0) {
+                horariosHtml = aluno.horarios.map(horario => {
+                    const dias = Array.isArray(horario.dias) ? horario.dias.join(', ') : horario.dias;
+                    return `<div class="horario-info"><strong>${horario.periodo}</strong>: ${dias}</div>`;
+                }).join('');
+            } else if (aluno.periodo && aluno.dias) {
+                // Compatibilidade com versão antiga
+                const dias = Array.isArray(aluno.dias) ? aluno.dias.join(', ') : aluno.dias;
+                horariosHtml = `<div class="horario-info"><strong>${aluno.periodo}</strong>: ${dias}</div>`;
+            }
             
             // Formatar meses pagos
             let mesesPagosHtml = 'Nenhum';
@@ -292,8 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${aluno.nome}</td>
                     <td>${aluno.valor}</td>
                     <td>${dataVencimento}</td>
-                    <td>${aluno.periodo}</td>
-                    <td>${diasAluno.join(', ')}</td>
+                    <td>${horariosHtml}</td>
                     <td>${mesesPagosHtml}</td>
                     <td class="actions-cell">
                         <button onclick="editarAluno('${aluno.id}')" class="btn btn-secondary btn-sm">
