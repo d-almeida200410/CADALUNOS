@@ -1,0 +1,610 @@
+:root {
+    --primary: #6C5CE7;
+    --primary-light: #8579e9;
+    --secondary: #00B894;
+    --danger: #FF7675;
+    --warning: #FDCB6E;
+    --dark: #2D3436;
+    --light: #F5F6FA;
+    --text: #2D3436;
+    --text-light: #FFFFFF;
+    --shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Estilos base */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    color: var(--text);
+    padding: 15px;
+    min-height: 100vh;
+    background-attachment: fixed;
+}
+
+/* Logo circular */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.logo-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.logo-circle:hover {
+    transform: scale(1.05) rotate(5deg);
+    border-color: var(--secondary);
+}
+
+/* Container principal */
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Títulos com gradiente */
+.gradient-text {
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+h1 {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Formulário */
+.form-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+    transition: var(--transition);
+}
+
+.form-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--dark);
+    font-size: 0.95rem;
+}
+
+/* Inputs com efeito glow */
+.input-glow {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    background-color: rgba(245, 245, 245, 0.5);
+}
+
+.input-glow:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+    background-color: white;
+}
+
+/* Radio e Checkbox personalizados */
+.radio-group, .checkbox-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.radio-option, .checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.radio-label, .checkbox-label {
+    cursor: pointer;
+    transition: var(--transition);
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.radio-label:hover, .checkbox-label:hover {
+    background-color: rgba(108, 92, 231, 0.1);
+}
+
+input[type="radio"], input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+
+/* Botões */
+.btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-text {
+    position: relative;
+    z-index: 2;
+    color: white;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--primary), var(--primary-light));
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(108, 92, 231, 0.6);
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #636e72, #b2bec3);
+    box-shadow: 0 4px 15px rgba(99, 110, 114, 0.4);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(99, 110, 114, 0.6);
+}
+
+.btn-danger {
+    background: linear-gradient(45deg, var(--danger), #ff9a9a);
+    box-shadow: 0 4px 15px rgba(255, 118, 117, 0.4);
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(255, 118, 117, 0.6);
+}
+
+/* Efeito glow nos botões */
+.btn-glow {
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px rgba(108, 92, 231, 0.5);
+    }
+    to {
+        box-shadow: 0 0 15px rgba(108, 92, 231, 0.8);
+    }
+}
+
+/* Efeito pulse nos botões */
+.btn-pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+/* Tabela de alunos */
+#alunosCadastrados {
+    margin-top: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th {
+    background: linear-gradient(45deg, var(--primary), var(--primary-light));
+    color: var(--text-light);
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: white;
+    font-size: 0.9rem;
+}
+
+tr:hover td {
+    background-color: #f8f8f8;
+}
+
+.no-data {
+    text-align: center;
+    color: var(--dark);
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    margin-top: 15px;
+    box-shadow: var(--shadow);
+    font-size: 0.95rem;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(45, 52, 54, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: var(--dark);
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.close:hover {
+    color: var(--danger);
+    transform: rotate(90deg);
+}
+
+.modal-actions {
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* Célula de ações */
+.actions-cell {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* Efeitos de hover para itens da tabela */
+tr {
+    transition: var(--transition);
+}
+
+/* Responsividade - Telas médias (tablets) */
+@media (max-width: 768px) {
+    body {
+        padding: 12px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.6rem;
+    }
+    
+    h2 {
+        font-size: 1.3rem;
+    }
+    
+    .form-card {
+        padding: 15px;
+    }
+    
+    .radio-group, .checkbox-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .logo-circle {
+        width: 90px;
+        height: 90px;
+    }
+    
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+/* Responsividade - Telas pequenas (celulares) */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+    
+    h2 {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+    
+    .form-card {
+        padding: 12px;
+    }
+    
+    .input-glow {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .logo-circle {
+        width: 80px;
+        height: 80px;
+        border-width: 3px;
+    }
+    
+    th, td {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    
+    .modal-content {
+        margin: 20% auto;
+        padding: 15px;
+    }
+    
+    .actions-cell {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .actions-cell .btn {
+        width: 100%;
+    }
+}
+
+/* Ajustes para telas muito pequenas */
+@media (max-width: 360px) {
+    .radio-label, .checkbox-label {
+        padding: 5px 8px;
+        font-size: 0.85rem;
+    }
+    
+    .button-group {
+        gap: 6px;
+    }
+    
+    .logo-circle {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+/* Orientação paisagem em celulares */
+@media (max-height: 480px) and (orientation: landscape) {
+    .container {
+        padding: 15px;
+    }
+    
+    .logo-container {
+        margin-bottom: 10px;
+    }
+    
+    .logo-circle {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .form-card {
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    
+    #alunosCadastrados {
+        margin-top: 20px;
+    }
+}  
+/* Ajustes para o grupo de rádio com mais opções */
+.radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    background-color: rgba(245, 245, 245, 0.5);
+    transition: var(--transition);
+}
+
+.radio-option:hover {
+    background-color: rgba(108, 92, 231, 0.1);
+}
+
+.radio-label {
+    cursor: pointer;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Responsividade para grupos de rádio */
+@media (max-width: 768px) {
+    .radio-group {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .radio-label {
+        white-space: normal;
+    }
+}
+
+/* Estilo para o campo de data */
+input[type="date"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: var(--transition);
+    background-color: rgba(245, 245, 245, 0.5);
+}
+
+input[type="date"]:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+    background-color: white;
+}
+
+/* Ajuste na tabela para a nova coluna */
+table th:nth-child(3),
+table td:nth-child(3) {
+    white-space: nowrap;
+}   
+
+/* Estilos para meses pagos */
+.meses-pagos-container {
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.meses-pagos-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 0 5px 0;
+}
+
+.meses-pagos-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 5px;
+    margin-bottom: 3px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+.add-mes-form {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.input-sm {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.btn-xs {
+    padding: 3px 6px;
+    font-size: 0.8rem;
+    min-width: auto;
+}

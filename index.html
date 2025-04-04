@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Alunos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/coruja.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <div class="logo-container animate__animated animate__bounceIn">
+        <img src="/img/logo.png" alt="Logo Escola" class="logo-circle">
+    </div>
+
+    <div class="container animate__animated animate__fadeInUp">
+        <h1><span class="gradient-text">Cadastro de Alunos</span></h1>
+        
+        <form id="cadastroForm" class="form-card">
+            <input type="hidden" id="alunoId">
+            
+            <div class="form-group">
+                <label for="nome">Nome do Aluno:</label>
+                <input type="text" id="nome" required class="input-glow">
+            </div>
+            
+            <div class="form-group">
+                <label for="valor">Valor Pago (R$):</label>
+                <input type="number" id="valor" min="0" step="0.01" required class="input-glow">
+            </div>
+
+            <div class="form-group">
+                <label for="vencimento">Data de Vencimento:</label>
+                <input type="date" id="vencimento" required class="input-glow">
+            </div>
+            
+            <div class="form-group">
+                <label>Período de Aula:</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="manha" name="periodo" value="Manhã" checked>
+                        <label for="manha" class="radio-label">🌞 Manhã</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="tarde1" name="periodo" value="Tarde (14h-16h)">
+                        <label for="tarde1" class="radio-label">🌇 Tarde (14h-16h)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="tarde2" name="periodo" value="Tarde (16h-18h)">
+                        <label for="tarde2" class="radio-label">🌆 Tarde (16h-18h)</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="tarde3" name="periodo" value="Tarde (18h-20h)">
+                        <label for="tarde3" class="radio-label">🌃 Tarde (18h-20h)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Dias da Semana:</label>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="segunda" name="dias" value="Segunda">
+                        <label for="segunda" class="checkbox-label">📅 Segunda</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="terca" name="dias" value="Terça">
+                        <label for="terca" class="checkbox-label">📅 Terça</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="quarta" name="dias" value="Quarta">
+                        <label for="quarta" class="checkbox-label">📅 Quarta</label>
+                    </div>
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="quinta" name="dias" value="Quinta">
+                        <label for="quinta" class="checkbox-label">📅 Quinta</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary btn-glow" id="submitBtn">
+                    <span class="btn-text">Cadastrar Aluno</span>
+                </button>
+                <button type="button" class="btn btn-secondary" id="cancelEditBtn" style="display: none;">
+                    <span class="btn-text">Cancelar Edição</span>
+                </button>
+            </div>
+        </form>
+        
+        <div id="alunosCadastrados" class="animate__animated animate__fadeIn">
+            <h2><span class="gradient-text">Alunos Cadastrados</span></h2>
+            <div id="listaAlunos">
+                <p class="no-data">Nenhum aluno cadastrado ainda.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <span class="close">&times;</span>
+            <h3 id="modalTitle">Confirmar ação</h3>
+            <p id="modalMessage">Tem certeza que deseja remover este aluno?</p>
+            <div class="button-group modal-actions">
+                <button id="modalCancelBtn" class="btn btn-secondary btn-pulse">
+                    <span class="btn-text">Cancelar</span>
+                </button>
+                <button id="modalConfirmBtn" class="btn btn-danger btn-pulse">
+                    <span class="btn-text">Confirmar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+<!-- Adicione isso antes do seu script.js -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
