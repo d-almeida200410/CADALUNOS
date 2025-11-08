@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <select class="periodo-select input-glow">
                         <option value="Manhã">🌞 Manhã</option>
                         <option value="Tarde (14h-16h)">🌇 Tarde (14h-16h)</option>
+                        <option value="Tarde (14h-15:30h)">🌇 Tarde (14h-15:30h)</option>
                         <option value="Tarde (16h-18h)">🌆 Tarde (16h-18h)</option>
                         <option value="Tarde (18h-20h)">🌃 Tarde (18h-20h)</option>
                     </select>
@@ -298,6 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <select class="periodo-select input-glow">
                             <option value="Manhã">🌞 Manhã</option>
                             <option value="Tarde (14h-16h)">🌇 Tarde (14h-16h)</option>
+                            <option value="Tarde (14h-15:30h)">🌇 Tarde (14h-15:30h)</option>
                             <option value="Tarde (16h-18h)">🌆 Tarde (16h-18h)</option>
                             <option value="Tarde (18h-20h)">🌃 Tarde (18h-20h)</option>
                         </select>
