@@ -29,6 +29,47 @@
                 <input type="number" id="valor" min="0" step="0.01" required class="input-glow">
             </div>
 
+            <!-- Campo Tipo de Plano -->
+            <div class="form-group">
+                <label for="tipoPlano">Tipo de Plano:</label>
+                <select id="tipoPlano" required class="input-glow">
+                    <option value="bimestral">📅 Bimestral (2 meses)</option>
+                    <option value="semestral">📅 Semestral (6 meses)</option>
+                    <option value="anual">📅 Anual (12 meses)</option>
+                </select>
+            </div>
+
+            <!-- NOVO CAMPO: Plano(s) Adquirido(s) -->
+            <div class="form-group">
+                <label>Plano(s) Adquirido(s):</label>
+                <div class="checkbox-group planos-container">
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="planoAdquirido" value="Alfabetização">
+                        <span class="checkbox-label">🧠 Alfabetização</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="planoAdquirido" value="Fundamental I (1º, 2º e 3º ano)">
+                        <span class="checkbox-label">👦 Fundamental I: 1º, 2º e 3º ano</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="planoAdquirido" value="4º e 5º ano">
+                        <span class="checkbox-label">👨‍🎓 4º e 5º ano</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="planoAdquirido" value="Fundamental II (6º e 7º ano)">
+                        <span class="checkbox-label">👨‍🎓 Fundamental II: 6º e 7º ano</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="planoAdquirido" value="8º ano">
+                        <span class="checkbox-label">🧑‍🎓 8º ano</span>
+                    </label>
+                    <label class="checkbox-option">
+                        <input type="checkbox" name="planoAdquirido" value="9º ano">
+                        <span class="checkbox-label">🧑‍🎓 9º ano</span>
+                    </label>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label for="vencimento">Data de Vencimento:</label>
                 <input type="date" id="vencimento" required class="input-glow">

@@ -35,6 +35,16 @@ document.addEventListener('DOMContentLoaded', function() {
     let alunos = [];
     let editandoId = null;
     
+    // Lista de planos disponíveis (para validação e exibição)
+    const planosDisponiveis = [
+        "Alfabetização",
+        "Fundamental I (1º, 2º e 3º ano)",
+        "4º e 5º ano",
+        "Fundamental II (6º e 7º ano)",
+        "8º ano",
+        "9º ano"
+    ];
+    
     // Função para formatar a data corretamente
     function formatarDataVencimento(dataString) {
         if (!dataString) return 'Não informado';
@@ -51,6 +61,83 @@ document.addEventListener('DOMContentLoaded', function() {
             month: '2-digit',
             year: 'numeric'
         });
+    }
+    
+    // Função para obter o ícone do tipo de plano
+    function getPlanoIcon(tipoPlano) {
+        switch(tipoPlano) {
+            case 'bimestral': return '📅';
+            case 'semestral': return '📅';
+            case 'anual': return '📅';
+            default: return '📅';
+        }
+    }
+    
+    // Função para formatar o tipo de plano para exibição
+    function formatarTipoPlano(tipoPlano) {
+        switch(tipoPlano) {
+            case 'bimestral': return `${getPlanoIcon(tipoPlano)} Bimestral`;
+            case 'semestral': return `${getPlanoIcon(tipoPlano)} Semestral`;
+            case 'anual': return `${getPlanoIcon(tipoPlano)} Anual`;
+            default: return `${getPlanoIcon('bimestral')} ${tipoPlano}`;
+        }
+    }
+    
+    // Função para obter a duração em meses do plano
+    function getDuracaoPlanoMeses(tipoPlano) {
+        switch(tipoPlano) {
+            case 'bimestral': return 2;
+            case 'semestral': return 6;
+            case 'anual': return 12;
+            default: return 2; // padrão bimestral
+        }
+    }
+    
+    // Função para formatar planos adquiridos para exibição
+    function formatarPlanosAdquiridos(planos) {
+        if (!planos || !Array.isArray(planos) || planos.length === 0) {
+            return 'Nenhum plano selecionado';
+        }
+        
+        return planos.map(plano => {
+            // Adicionar emojis baseados no tipo de plano
+            let emoji = '📚';
+            if (plano.includes('Alfabetização')) emoji = '🧠';
+            else if (plano.includes('Fundamental I')) emoji = '👦';
+            else if (plano.includes('4º e 5º')) emoji = '👨‍🎓';
+            else if (plano.includes('Fundamental II')) emoji = '👨‍🎓';
+            else if (plano.includes('8º ano')) emoji = '🧑‍🎓';
+            else if (plano.includes('9º ano')) emoji = '🧑‍🎓';
+            
+            return `${emoji} ${plano}`;
+        }).join('<br>');
+    }
+    
+    // Obter planos adquiridos do formulário
+    function getPlanosFromForm() {
+        const checkboxes = document.querySelectorAll('input[name="planoAdquirido"]:checked');
+        const planosSelecionados = Array.from(checkboxes).map(cb => cb.value);
+        
+        // Validar planos selecionados
+        return planosSelecionados.filter(plano => planosDisponiveis.includes(plano));
+    }
+    
+    // Definir planos no formulário (para edição)
+    function setPlanosInForm(planos) {
+        // Desmarcar todos primeiro
+        document.querySelectorAll('input[name="planoAdquirido"]').forEach(cb => {
+            cb.checked = false;
+        });
+        
+        // Marcar os planos do aluno
+        if (planos && Array.isArray(planos)) {
+            planos.forEach(plano => {
+                const checkbox = document.querySelector(`input[name="planoAdquirido"][value="${plano}"]`);
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+            });
+        }
     }
     
     // Adicionar novo horário
@@ -187,9 +274,17 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        const planosAdquiridos = getPlanosFromForm();
+        if (planosAdquiridos.length === 0) {
+            showError('Selecione pelo menos um plano adquirido!');
+            return;
+        }
+        
         const aluno = {
             nome: document.getElementById('nome').value,
             valor: parseFloat(document.getElementById('valor').value).toFixed(2),
+            tipoPlano: document.getElementById('tipoPlano').value,
+            planosAdquiridos: planosAdquiridos,
             vencimento: document.getElementById('vencimento').value,
             horarios: horarios,
             dataCadastro: firebase.firestore.FieldValue.serverTimestamp()
@@ -228,7 +323,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('alunoId').value = id;
         document.getElementById('nome').value = aluno.nome;
         document.getElementById('valor').value = aluno.valor;
+        document.getElementById('tipoPlano').value = aluno.tipoPlano || 'bimestral';
         document.getElementById('vencimento').value = aluno.vencimento;
+        
+        // Definir planos adquiridos
+        setPlanosInForm(aluno.planosAdquiridos);
         
         // Limpar horários existentes
         horariosContainer.innerHTML = '';
@@ -287,7 +386,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function limparFormulario() {
         cadastroForm.reset();
-        document.getElementById('manha').checked = true;
+        document.getElementById('tipoPlano').value = 'bimestral';
+        
+        // Limpar checkboxes de planos adquiridos
+        document.querySelectorAll('input[name="planoAdquirido"]').forEach(cb => {
+            cb.checked = false;
+        });
+        
         alunoIdInput.value = '';
         
         // Limpar horários (deixar apenas um)
@@ -369,6 +474,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <tr>
                         <th>Nome</th>
                         <th>Valor (R$)</th>
+                        <th>Tipo de Plano</th>
+                        <th>Plano(s) Adquirido(s)</th>
                         <th>Vencimento</th>
                         <th>Horários</th>
                         <th>Meses Pagos</th>
@@ -380,6 +487,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         alunos.forEach(aluno => {
             const dataVencimento = formatarDataVencimento(aluno.vencimento);
+            const tipoPlanoFormatado = formatarTipoPlano(aluno.tipoPlano || 'bimestral');
+            const planosFormatados = formatarPlanosAdquiridos(aluno.planosAdquiridos);
             
             // Formatar horários
             let horariosHtml = 'Nenhum horário';
@@ -432,6 +541,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <tr>
                     <td>${aluno.nome}</td>
                     <td>${aluno.valor}</td>
+                    <td>${tipoPlanoFormatado}</td>
+                    <td class="planos-cell">${planosFormatados}</td>
                     <td>${dataVencimento}</td>
                     <td>${horariosHtml}</td>
                     <td>${mesesPagosHtml}</td>
@@ -508,4 +619,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Expor outras funções para o escopo global
     window.editarAluno = editarAluno;
     window.confirmarRemocao = confirmarRemocao;
+    window.getDuracaoPlanoMeses = getDuracaoPlanoMeses;
 });

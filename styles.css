@@ -669,3 +669,158 @@ table td:nth-child(3) {
         margin-top: 10px;
     }
 }
+
+/* Adicione estas regras CSS na seção apropriada do seu arquivo styles.css */
+
+/* Estilo para o select do tipo de plano */
+select#tipoPlano {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: var(--transition);
+    background-color: rgba(245, 245, 245, 0.5);
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232D3436' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 15px;
+    cursor: pointer;
+}
+
+select#tipoPlano:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+    background-color: white;
+}
+
+/* Estilo para as opções do select */
+select#tipoPlano option {
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Ajuste na tabela para a nova coluna */
+table th:nth-child(3),
+table td:nth-child(3) {
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+/* Ajuste na tabela para todas as colunas */
+table th:nth-child(1) { width: 15%; } /* Nome */
+table th:nth-child(2) { width: 10%; } /* Valor */
+table th:nth-child(3) { width: 15%; } /* Tipo de Plano */
+table th:nth-child(4) { width: 12%; } /* Vencimento */
+table th:nth-child(5) { width: 20%; } /* Horários */
+table th:nth-child(6) { width: 15%; } /* Meses Pagos */
+table th:nth-child(7) { width: 13%; } /* Ações */
+
+/* Responsividade para a nova coluna */
+@media (max-width: 768px) {
+    table th:nth-child(3),
+    table td:nth-child(3) {
+        min-width: 100px;
+    }
+    
+    table th:nth-child(3),
+    table td:nth-child(3) {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    table th:nth-child(3),
+    table td:nth-child(3) {
+        min-width: 80px;
+        white-space: normal;
+    }
+}
+
+/* Adicione estas regras CSS */
+
+/* Estilo para o container de planos */
+.planos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: rgba(245, 245, 245, 0.5);
+    border: 1px solid #e0e0e0;
+}
+
+.planos-container .checkbox-option {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-radius: 6px;
+    background-color: white;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.planos-container .checkbox-option:hover {
+    background-color: rgba(108, 92, 231, 0.1);
+    border-color: rgba(108, 92, 231, 0.3);
+}
+
+.planos-container .checkbox-label {
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 5px;
+    flex-grow: 1;
+}
+
+/* Célula de planos na tabela */
+.planos-cell {
+    min-width: 150px;
+    max-width: 200px;
+    line-height: 1.4;
+}
+
+/* Responsividade para planos */
+@media (max-width: 768px) {
+    .planos-container {
+        grid-template-columns: 1fr;
+        max-height: 250px;
+    }
+    
+    .planos-cell {
+        max-width: 150px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .planos-container {
+        max-height: 300px;
+    }
+    
+    .planos-cell {
+        max-width: 120px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Ajuste na tabela para a nova coluna */
+table th:nth-child(4),
+table td:nth-child(4) {
+    min-width: 150px;
+    white-space: normal;
+}
+
+/* Ajuste nas larguras das colunas */
+table th:nth-child(1) { width: 12%; } /* Nome */
+table th:nth-child(2) { width: 8%; }  /* Valor */
+table th:nth-child(3) { width: 12%; } /* Tipo de Plano */
+table th:nth-child(4) { width: 15%; } /* Planos Adquiridos */
+table th:nth-child(5) { width: 10%; } /* Vencimento */
+table th:nth-child(6) { width: 18%; } /* Horários */
+table th:nth-child(7) { width: 12%; } /* Meses Pagos */
+table th:nth-child(8) { width: 13%; } /* Ações */
