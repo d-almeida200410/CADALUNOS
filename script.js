@@ -42,7 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
         "4º e 5º ano",
         "Fundamental II (6º e 7º ano)",
         "8º ano",
-        "9º ano"
+        "9º ano",
+        "medio"
     ];
     
     // Função para formatar a data corretamente
@@ -108,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (plano.includes('Fundamental II')) emoji = '👨‍🎓';
             else if (plano.includes('8º ano')) emoji = '🧑‍🎓';
             else if (plano.includes('9º ano')) emoji = '🧑‍🎓';
+            else if (plano.includes('Médio')) emoji = '🧑‍🎓';
             
             return `${emoji} ${plano}`;
         }).join('<br>');
