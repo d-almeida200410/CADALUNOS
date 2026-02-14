@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         "Fundamental II (6º e 7º ano)",
         "8º ano",
         "9º ano",
-        "medio"
+        "Médio"
     ];
     
     // Função para formatar a data corretamente
