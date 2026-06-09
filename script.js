@@ -166,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <label><input type="checkbox" value="Terça"> Ter</label>
                         <label><input type="checkbox" value="Quarta"> Qua</label>
                         <label><input type="checkbox" value="Quinta"> Qui</label>
+                        <label><input type="checkbox" value="Sexta"> Sex</label>
                     </div>
                 </div>
                 
@@ -419,6 +420,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <label><input type="checkbox" value="Terça"> Ter</label>
                             <label><input type="checkbox" value="Quarta"> Qua</label>
                             <label><input type="checkbox" value="Quinta"> Qui</label>
+                            <label><input type="checkbox" value="Sexta"> Sex</label>
                         </div>
                     </div>
                     
